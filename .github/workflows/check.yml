@@ -1,0 +1,41 @@
+# Runs on every push to main/dev and every pull request:
+# - `nix flake check` on the core flake and the minimal example
+# - `nix fmt -- --check .` (alejandra) — formatting
+# - statix — Nix anti-pattern linter
+# - deadnix — dead-code detector
+name: check
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: flake check (core)
+        run: nix flake check
+
+      - name: flake check (minimal example)
+        env:
+          # The example's nixnas input points at this (private) repo.
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
+        run: cd examples/minimal && nix flake check
+
+      - name: Formatting (nix fmt --check)
+        run: nix fmt -- --check .
+
+      - name: Lint (statix)
+        run: nix run nixpkgs#statix -- check .
+
+      - name: Dead code (deadnix)
+        run: nix run nixpkgs#deadnix -- --fail .
