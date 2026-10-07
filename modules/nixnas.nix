@@ -7,14 +7,15 @@
 # Importing this module enables the core. There is no `nixnas.enable`
 # flag — every feature module below is self-contained and applies when
 # imported, dendritic-style.
-_: {
-  imports = [
-    ./core/firewall.nix
-    ./core/ssh.nix
-    ./core/users.nix
-    ./core/podman.nix
-    ./core/updates.nix
-    ./core/storage.nix
-    ./core/nix-settings.nix
-  ];
+#
+# Feature modules are auto-imported: every .nix file next to this one
+# (except this file) is one feature, named by its path. Adding a file
+# is enough — there is no imports list to maintain, and files can be
+# renamed or split freely.
+{lib, ...}: {
+  imports = let
+    files = builtins.attrNames (builtins.readDir ./.);
+    isFeature = f: f != "nixnas.nix" && lib.hasSuffix ".nix" f;
+  in
+    map (f: ./. + "/${f}") (builtins.filter isFeature files);
 }
