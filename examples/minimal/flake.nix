@@ -7,8 +7,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Points at the real repo; the example stays self-contained for CI.
-    nixnas.url = "github:nix8247/Nixnas";
+    # Tracks the dev branch while it's the working branch — the example's
+    # checks then validate the actual work in progress. When dev is
+    # squashed into main, point this back at github:nix8247/Nixnas.
+    nixnas.url = "github:nix8247/Nixnas/dev";
   };
 
   outputs = {
