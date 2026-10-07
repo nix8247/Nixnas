@@ -14,9 +14,10 @@ _: {
     # branch weekly. For a locked snapshot, point at a tag instead, e.g.
     # "github:you/nixnas-fleet/v1.2.3#nas01".
     updates.flake = "github:you/nixnas-fleet#nas01";
-
-    # Fleet-wide firewall: SMB for the LAN, for example. Note this list
-    # *replaces* the default — keep 22 (SSH) unless you mean to drop it.
-    firewall.allowedTCPPorts = [22 445];
   };
+
+  # Fleet-wide firewall: SMB for the LAN, for example. This *adds to* the
+  # ports core modules open themselves (22 comes from ssh.nix) — NixOS
+  # merges the lists, so there's nothing to keep in sync.
+  networking.firewall.allowedTCPPorts = [ 445 ];
 }
