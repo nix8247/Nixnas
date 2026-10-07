@@ -33,15 +33,13 @@ in {
     };
   };
 
-  config = lib.mkIf config.nixnas.enable {
-    system.autoUpgrade = {
-      enable = true;
-      inherit (cfg) flake;
-      dates = cfg.schedule;
-      flags = ["--refresh"];
-      # Reboots stay manual: the new generation is built and staged, and
-      # you reboot when ready.
-      allowReboot = lib.mkDefault false;
-    };
+  system.autoUpgrade = {
+    enable = true;
+    inherit (cfg) flake;
+    dates = cfg.schedule;
+    flags = ["--refresh"];
+    # Reboots stay manual: the new generation is built and staged, and
+    # you reboot when ready.
+    allowReboot = lib.mkDefault false;
   };
 }

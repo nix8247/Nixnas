@@ -32,20 +32,18 @@ in {
     ];
   };
 
-  config = lib.mkIf cfg.enable {
-    warnings =
-      lib.optional (cfg.admins == [])
-      "nixnas: no admins declared — nobody will be able to SSH in. Set nixnas.admins.";
+  warnings =
+    lib.optional (cfg.admins == [])
+    "nixnas: no admins declared — nobody will be able to SSH in. Set nixnas.admins.";
 
-    users.users = lib.listToAttrs (map
-      (a: {
-        inherit (a) name;
-        value = {
-          isNormalUser = true;
-          extraGroups = ["wheel"];
-          openssh.authorizedKeys.keys = a.sshKeys;
-        };
-      })
-      cfg.admins);
-  };
+  users.users = lib.listToAttrs (map
+    (a: {
+      inherit (a) name;
+      value = {
+        isNormalUser = true;
+        extraGroups = ["wheel"];
+        openssh.authorizedKeys.keys = a.sshKeys;
+      };
+    })
+    cfg.admins);
 }

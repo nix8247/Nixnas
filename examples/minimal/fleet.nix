@@ -19,5 +19,5 @@ _: {
   # Fleet-wide firewall: SMB for the LAN, for example. This *adds to* the
   # ports core modules open themselves (22 comes from ssh.nix) — NixOS
   # merges the lists, so there's nothing to keep in sync.
-  networking.firewall.allowedTCPPorts = [ 445 ];
+  networking.firewall.allowedTCPPorts = [445];
 }

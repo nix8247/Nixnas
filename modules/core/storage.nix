@@ -7,24 +7,21 @@
 #   Tier 2 — per-disk btrfs or bcachefs, pooled with mergerfs,
 #            protected by SnapRAID (bcachefs does not replace btrfs).
 {
-  config,
   lib,
   pkgs,
   ...
 }: {
-  config = lib.mkIf config.nixnas.enable {
-    # Declaring support here only means the drivers land in the initrd
-    # when a host actually uses the filesystem.
-    boot.supportedFilesystems = ["btrfs" "zfs" "bcachefs"];
+  # Declaring support here only means the drivers land in the initrd
+  # when a host actually uses the filesystem.
+  boot.supportedFilesystems = ["btrfs" "zfs" "bcachefs"];
 
-    environment.systemPackages = with pkgs; [
-      btrfs-progs
-      bcachefs-tools
-      zfs
-      mergerfs
-      snapraid
-    ];
+  environment.systemPackages = with pkgs; [
+    btrfs-progs
+    bcachefs-tools
+    zfs
+    mergerfs
+    snapraid
+  ];
 
-    services.fstrim.enable = lib.mkDefault true;
-  };
+  services.fstrim.enable = lib.mkDefault true;
 }
