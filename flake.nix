@@ -20,8 +20,15 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, ... }: {
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  }: {
     nixosModules.default = import ./modules/nixnas.nix;
     nixosModules.nixnas = self.nixosModules.default;
+
+    # `nix fmt` — canonical formatting for every .nix file in the repo.
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
   };
 }
