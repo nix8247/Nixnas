@@ -5,14 +5,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1791332092,
-        "narHash": "sha256-iuO7PUWPtS80CDMaotTm661SjEEJxrMv/YoiClUB0P8=",
-        "path": "/home/hatch/workspace/nixnas",
-        "type": "path"
+        "lastModified": 1791332126,
+        "narHash": "sha256-XKWOQl55JF9tT4RKbwoOS6shmLtptkT5PwaMLBirWVQ=",
+        "owner": "nix8247",
+        "repo": "Nixnas",
+        "rev": "325cc05ebe99af8f72361655875991ce1f5adfc3",
+        "type": "github"
       },
       "original": {
-        "path": "/home/hatch/workspace/nixnas",
-        "type": "path"
+        "owner": "nix8247",
+        "repo": "Nixnas",
+        "type": "github"
       }
     },
     "nixpkgs": {

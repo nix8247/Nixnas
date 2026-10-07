@@ -7,11 +7,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Local path so the example evaluates from a checkout. Real
-    # deployments use: github:nix8247/Nixnas (optionally pinned to a tag).
-    # (A relative ../.. doesn't survive flake input resolution, so this
-    # is absolute — point it at your own checkout.)
-    nixnas.url = "path:/home/hatch/workspace/nixnas";
+    # Points at the real repo; the example stays self-contained for CI.
+    nixnas.url = "github:nix8247/Nixnas";
   };
 
   outputs = { self, nixpkgs, nixnas, ... }: {
