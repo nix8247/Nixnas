@@ -2,9 +2,11 @@
 # Service definitions use Quadlets (.container files as systemd units).
 #
 # Open question (not decided yet): rootless vs rootful default.
-{ config, lib, ... }:
-
 {
+  config,
+  lib,
+  ...
+}: {
   config = lib.mkIf config.nixnas.enable {
     virtualisation.podman = {
       enable = true;

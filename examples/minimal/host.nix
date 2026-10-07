@@ -1,8 +1,6 @@
 # Host layer (example): this particular box. The only place hardware,
 # disks, and machine identity may appear.
-{ ... }:
-
-{
+_: {
   nixnas.enable = true;
   networking.hostName = "nas01";
 

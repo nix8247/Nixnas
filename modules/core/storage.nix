@@ -6,13 +6,16 @@
 #   Tier 1 — ZFS mirrors for irreplaceable data.
 #   Tier 2 — per-disk btrfs or bcachefs, pooled with mergerfs,
 #            protected by SnapRAID (bcachefs does not replace btrfs).
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   config = lib.mkIf config.nixnas.enable {
     # Declaring support here only means the drivers land in the initrd
     # when a host actually uses the filesystem.
-    boot.supportedFilesystems = [ "btrfs" "zfs" "bcachefs" ];
+    boot.supportedFilesystems = ["btrfs" "zfs" "bcachefs"];
 
     environment.systemPackages = with pkgs; [
       btrfs-progs

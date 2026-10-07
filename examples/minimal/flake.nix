@@ -11,7 +11,11 @@
     nixnas.url = "github:nix8247/Nixnas";
   };
 
-  outputs = { self, nixpkgs, nixnas, ... }: {
+  outputs = {
+    nixpkgs,
+    nixnas,
+    ...
+  }: {
     nixosConfigurations.nas01 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [

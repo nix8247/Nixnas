@@ -3,9 +3,7 @@
 # Everything under `nixnas.*` is project-owned and hardware-agnostic:
 # no hostnames, no disks, no drivers here. Machine specifics live in
 # the host layer of the deployer's own flake.
-{ config, lib, ... }:
-
-{
+{lib, ...}: {
   imports = [
     ./core/firewall.nix
     ./core/ssh.nix

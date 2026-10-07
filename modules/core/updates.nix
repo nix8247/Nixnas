@@ -8,9 +8,13 @@
 #
 # Safety nets: every rebuild keeps the previous NixOS generations in the
 # boot menu, so a bad update is one reboot away from the last good one.
-{ config, lib, ... }:
-let cfg = config.nixnas.updates; in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.nixnas.updates;
+in {
   options.nixnas.updates = {
     flake = lib.mkOption {
       type = lib.types.str;
@@ -32,9 +36,9 @@ let cfg = config.nixnas.updates; in
   config = lib.mkIf config.nixnas.enable {
     system.autoUpgrade = {
       enable = true;
-      flake = cfg.flake;
+      inherit (cfg) flake;
       dates = cfg.schedule;
-      flags = [ "--refresh" ];
+      flags = ["--refresh"];
       # Reboots stay manual: the new generation is built and staged, and
       # you reboot when ready.
       allowReboot = lib.mkDefault false;
