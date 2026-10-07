@@ -26,7 +26,7 @@ In your own flake:
     nixnas.url = "github:nix8247/Nixnas";
   };
 
-  outputs = { self, nixpkgs, nixnas, ... }: {
+  outputs = { nixpkgs, nixnas, ... }: {
     nixosConfigurations.myserver = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -45,7 +45,6 @@ Then in the host config:
 ```nix
 { ... }:
 {
-  nixnas.enable = true;
   networking.hostName = "myserver";
 
   nixnas.admins = [
@@ -58,12 +57,17 @@ Then in the host config:
 }
 ```
 
+Importing `nixnas.nixosModules.default` enables the core — there is no
+enable flag.
+
 ## What's in core
 
 - **Base system** — users (`nixnas.admins`), networking, SSH (key-only,
   no root login).
-- **Firewall** — enabled by default; SSH open, more via
-  `nixnas.firewall.allowedTCPPorts` / `allowedUDPPorts`.
+- **Firewall** — enabled by default. Each feature opens its own ports
+  (SSH opens 22); open more with plain
+  `networking.firewall.allowedTCPPorts` / `allowedUDPPorts` — NixOS merges
+  the lists, so nothing needs to stay in sync.
 - **Updates** — pull-based, on a schedule (`nixnas.updates.schedule`,
   default weekly). The box runs `nixos-rebuild switch` against
   `nixnas.updates.flake` — a branch for rolling latest, a tag for a
@@ -77,6 +81,15 @@ Then in the host config:
 
 What core will never contain: secrets (it ships the mechanism and docs,
 never the values) and anything hardware-specific.
+
+## Module layout
+
+`modules/` holds one file per feature, each self-contained: everything a
+feature needs lives in its file (SSH opens its own firewall port; the
+firewall module doesn't know SSH exists). `modules/nixnas.nix` is the
+entry point — it auto-imports every other `.nix` file next to it, so
+adding a feature is just adding a file. No enable flags: importing the
+module enables it.
 
 ## Example
 
